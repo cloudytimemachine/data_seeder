@@ -1,17 +1,17 @@
-const urls = require('./website_list.json');
+const urls = require('./500websites.json');
 const async = require('async');
 const request = require('request');
 const CronJob = require('cron').CronJob;
 const logger = require('./lib/logger');
 
-const API_ENDPOINT = process.env.API_ENDPOINT || 'http://localhost:3001';
+const API_ENDPOINT = process.env.API_ENDPOINT || 'http://localhost:3001/api';
 const SNAPSHOT_PATH = `${API_ENDPOINT}/snapshots`;
 const QUEUELEN_PATH = `${API_ENDPOINT}/queue`;
 
 let counter = 0;
 
 const queuePosts = (count) => {
-  async.each(urls.slice(count, count + 4), (url, cb) => {
+  async.each(urls.slice(count, count + 7), (url, cb) => {
     logger(`Requesting snapshot of ${url}`);
     const snapshotRequest = { requestedUrl: url };
 
@@ -51,11 +51,11 @@ const getQueueLen = () => {
   );
 };
 
-new CronJob('00 * * * * *', () => {
+new CronJob('00 */20 * * * *', () => {
   // Runs every day, every hour and every minute when the clock shows 00 seconds.
   queuePosts(counter);
   getQueueLen();
-  counter += 4;
+  counter += 7;
   if (counter >= urls.length) {
     // if we're a the end of the list of websites, just go back to the beginning
     counter = 0;
