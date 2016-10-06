@@ -8,7 +8,7 @@ const API_ENDPOINT = process.env.API_ENDPOINT || 'http://localhost:3001/api';
 const SNAPSHOT_PATH = `${API_ENDPOINT}/snapshots`;
 const QUEUELEN_PATH = `${API_ENDPOINT}/queue`;
 
-let counter = 0;
+var counter = 0;
 
 const queuePosts = (count) => {
   async.each(urls.slice(count, count + 7), (url, cb) => {
@@ -51,8 +51,8 @@ const getQueueLen = () => {
   );
 };
 
-new CronJob('00 */20 * * * *', () => {
-  // Runs every day, every hour and every minute when the clock shows 00 seconds.
+new CronJob('* */20 * * * *', () => {
+  // Runs every day, every hour and 20 minutes.
   queuePosts(counter);
   getQueueLen();
   counter += 7;
