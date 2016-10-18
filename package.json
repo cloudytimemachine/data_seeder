@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Generates seed snapshot data for the Cloudy Time Machine project.",
   "main": "index.js",
-  "engines": {
-    "node": ">=4.5"
-  },
   "scripts": {
     "start": "node index.js",
     "test": "test"

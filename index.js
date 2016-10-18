@@ -26,7 +26,8 @@ const queuePosts = (count) => {
         if (err) {
           logger(err);
         } else if (body.status === 'PENDING') {
-          logger(`Server has responded and snapshot of ${url} is currently PENDING.`);
+          logger(`Server has responded and and snapshot is currently PENDING. Here is the response:`);
+          console.log(body);
         }
       }
     );
@@ -51,8 +52,17 @@ const getQueueLen = () => {
   );
 };
 
-new CronJob('* */20 * * * *', () => {
-  // Runs every day, every hour and 20 minutes.
+//
+function cronSchedule() {
+  if (process.env.NODE_ENV === 'production') {
+    // Runs every day, every hour, every 20 minutes (3x hour).
+    return '00 */20 * * * *';
+  }
+  // Runs every minute on the minute.
+  return '00 * * * * *';
+};
+
+new CronJob(cronSchedule(), () => {
   queuePosts(counter);
   getQueueLen();
   counter += 7;
@@ -67,3 +77,22 @@ new CronJob('* */20 * * * *', () => {
   // set time zone
   'America/New_York'
 );
+
+function startUp() {
+  logger('Data_seeder is starting up.');
+  request(
+    {
+      method: 'GET',
+      url: QUEUELEN_PATH,
+      json: true,
+    },
+    (err, res, body) => {
+      if (err) {
+        logger('No connection to the API server.');
+      } else {
+        logger(`We have connection the API server and we will begin seeding shortly.`);
+      }
+    }
+  );
+
+}();

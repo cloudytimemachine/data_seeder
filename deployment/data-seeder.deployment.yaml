@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: data-seeder
+  labels:
+    app: data-seeder
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: data-seeder
+    spec:
+      imagePullSecrets:
+      - name: cloudytimemachine-kubernetes-pull-secret
+      containers:
+        - name: data-seeder
+          imagePullPolicy: IfNotPresent
+          image: quay.io/cloudytimemachine/data-seeder:v0.2
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: API_ENDPOINT
+              value: http://api/api
