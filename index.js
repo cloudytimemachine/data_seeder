@@ -86,13 +86,14 @@ function startUp() {
       url: QUEUELEN_PATH,
       json: true,
     },
-    (err, res, body) => {
+    (err, res) => {
       if (err) {
-        logger('No connection to the API server.');
+        logger(`An error has occurred  ${err}`);
       } else {
-        logger(`We have connection the API server and we will begin seeding shortly.`);
+        logger('Data_seeder has a working connection to the API and is ready to work.');
       }
     }
   );
+}
 
-}();
+startUp();
