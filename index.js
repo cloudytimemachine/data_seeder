@@ -26,8 +26,7 @@ const queuePosts = (count) => {
         if (err) {
           logger(err);
         } else if (body.status === 'PENDING') {
-          logger(`Server has responded and and snapshot is currently PENDING. Here is the response:`);
-          console.log(body);
+          logger('Server has responded and and snapshot is currently PENDING.');
         }
       }
     );
@@ -60,7 +59,7 @@ function cronSchedule() {
   }
   // Runs every minute on the minute.
   return '00 * * * * *';
-};
+}
 
 new CronJob(cronSchedule(), () => {
   queuePosts(counter);
