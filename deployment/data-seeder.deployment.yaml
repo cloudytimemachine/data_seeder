@@ -16,7 +16,7 @@ spec:
       containers:
         - name: data-seeder
           imagePullPolicy: IfNotPresent
-          image: quay.io/cloudytimemachine/data-seeder:v0.2
+          image: quay.io/cloudytimemachine/data-seeder:v0.3
           env:
             - name: NODE_ENV
               value: production
